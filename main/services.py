@@ -37,7 +37,7 @@ class CommentService:
         """Returns a queryset of all Comment records in the database"""
         return Comment.objects.all()
     
-    def filter_objects(self, **data) -> List[Comment]:
+    def filter_objects(self, **data: Dict) -> List[Comment]:
         """Returns a queryset of filtered Comment records in the database"""
         return Comment.objects.filter(**data)
 

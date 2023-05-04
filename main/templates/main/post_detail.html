@@ -1,19 +1,25 @@
 {% extends 'base.html' %}
 
+{% load crispy_forms_tags %}
+
 {% block content %}
     <div class="container mt-5 mb-5">
-        <div class="bg-black text-center">
-            <img src="{{ post.image.url }}" class="w-100" alt="">
+        <div class="bg-black text-center rounded-top">
+            <img src="{{ post.image.url }}" class="w-100 rounded-top" alt="">
 
             <div class="p-5">
-                <a href="" class="btn btn-lg btn-primary rounded-circle mb-4 pt-3 pb-3 ps-4 pe-4">
-                    <i class="bi bi-heart-fill"></i>
-                </a>
+                <form method="post" action="{% url 'like_add' post.id %}">
+                    {% csrf_token %}
+
+                    <button class="btn text-white {% if request.user in post.likes.all %}bg-secondary{% else %}bg-primary{% endif %} rounded rounded-circle mb-4" style="width: 70px; height: 70px;" type="submit">
+                        <h4 class="mt-1"><i class="bi bi-star-fill"></i></h4>
+                    </button>
+                </form>
 
                 <h4 class="text-white">{{ post.title }}</h4>
                 
                 <div class="d-flex align-items-center justify-content-center gap-3 text-muted">
-                    <small><i class="bi bi-heart-fill"></i> {{ post.likes.count }}</small>
+                    <small><i class="bi bi-star-fill"></i> {{ post.likes.count }}</small>
                     <small><i class="bi bi-chat-left-text-fill"></i> {{ comments.count }}</small>
                 </div>
 
@@ -28,32 +34,49 @@
                 <div class="row">
                     <div class="col rounded">
                         <div class="list-group-item pt-3 pb-3">
-                            <h4>Log in to join the conversation</h4>
-                            <p>Add your feedback for {{ post.author }} project by log in or sign up.</p>
-                            
-                            <a class="btn btn-sm btn-outline-primary me-1" href="{% url 'login' %}">Log in</a>
-                            <a class="btn btn-sm btn-primary" href="/register/">Sign up</a>
-                        </div>
-        
-                        <div class="list-group-item d-flex flex-column gap-4">
-                            {% for comment in comments %}
-                                <div class="d-flex gap-3">
-                                    <img class="rounded" style="width: 60px; height: 60px;" src="https://forkast.news/wp-content/uploads/2022/03/NFT-Avatar.png">
-                                    
-                                    <div>
-                                        <div>
-                                            {% if user.is_verified %}
-                                                <i class="bi bi-patch-check-fill text-primary"></i>
-                                            {% endif %}
-                                            <small class="fw-bold">{{ comment.author }}</small>
-                                            <small class="text-muted">∙ {{ comment.date_published|date:"M d, Y" }}</small>
-                                        </div>
-        
-                                        <small>{{ comment.comment }}</small>
+                            {% if user.is_authenticated %}
+                                <form action="" method="post">
+                                    {% csrf_token %}
+
+                                    <div class="d-flex justify-content-start gap-3">
+                                        <img class="rounded" style="width: 60px; height: 60px;" src="https://forkast.news/wp-content/uploads/2022/03/NFT-Avatar.png">
+                                        <div class="flex-fill">{{ form.comment|as_crispy_field }}</div>
                                     </div>
-                                </div>
-                            {% endfor %}
+                                    
+                                    <div class="d-flex justify-content-end">    
+                                        <button class="btn btn-sm btn-primary" type="submit">Send a comment</button>
+                                    </div>
+                                </form>
+                            {% else %}
+                                <h4>Log in to join the conversation</h4>
+                                <p>Add your feedback for {{ post.author }} project by log in or sign up.</p>
+                                
+                                <a class="btn btn-sm btn-outline-primary me-1" href="{% url 'login' %}">Log in</a>
+                                <a class="btn btn-sm btn-primary" href="/register/">Sign up</a>
+                            {% endif %}
                         </div>
+        
+                        {% if comments %}
+                            <div class="list-group-item d-flex flex-column gap-4">
+                                {% for comment in comments %}
+                                    <div class="d-flex gap-3">
+                                        <img class="rounded" style="width: 60px; height: 60px;" src="https://forkast.news/wp-content/uploads/2022/03/NFT-Avatar.png">
+                                        
+                                        <div>
+                                            <div>
+                                                {% if post.author.is_verified %}
+                                                    <i class="bi bi-patch-check-fill text-primary"></i>
+                                                {% endif %}
+                                                <small class="fw-bold">{{ comment.author }}</small>
+                                                <small class="text-muted">∙ {{ comment.date_published|date:"M d, Y" }}</small>
+                                            </div>
+            
+                                            <small>{{ comment.comment }}</small>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
 
                     <div class="col-4 rounded">
@@ -63,14 +86,18 @@
                                     <img class="rounded" style="width: 50px; height: 50px;" src="https://forkast.news/wp-content/uploads/2022/03/NFT-Avatar.png">
                                     
                                     <div>
-                                        {% if user.is_verified %}
+                                        {% if post.author.is_verified %}
                                             <i class="bi bi-patch-check-fill text-primary"></i>
                                         {% endif %}
                                         <small class="fw-bold">{{ post.author }}</small>
                                     </div>
                                 </div>
     
-                                <a href="" class="btn btn-sm btn-primary w-100">Follow</a>
+                                {% if not post.author %}
+                                    <a href="" class="btn btn-sm btn-primary w-100">Follow</a>
+                                {% else %}
+                                    <a href="" class="btn btn-sm btn-outline-secondary w-100">See profile</a>
+                                {% endif %}
                             </div>
                         </div>
 
@@ -82,7 +109,7 @@
                                     <small>{{ post.description }}</small>
 
                                     <div class="d-flex align-items-center gap-3 text-muted">
-                                        <small><i class="bi bi-heart-fill"></i> {{ post.likes.count }}</small>
+                                        <small><i class="bi bi-star-fill"></i> {{ post.likes.count }}</small>
                                         <small><i class="bi bi-chat-left-text-fill"></i> {{ comments.count }}</small>
                                     </div>
                     
