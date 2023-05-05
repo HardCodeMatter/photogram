@@ -1,5 +1,11 @@
 from django import forms
-from main.models import Comment
+from main.models import Post, Comment
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('image', 'title', 'description',)
 
 
 class CommentForm(forms.Form):

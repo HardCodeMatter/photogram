@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container-fluid mt-5 mb-5">
+        <div class="d-flex gap-3">
+            <div class="col align-self-baseline border bg-white rounded p-5">
+                <img class="rounded" style="width: 100%;" src="{{ post.image.url }}" alt="{{ post.title }}">
+            </div>
+    
+            <form class="col-3 align-self-start border bg-white rounded p-3" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div>
+                    {{ form.image|as_crispy_field }}
+                    {{ form.title|as_crispy_field }}
+                    {{ form.description|as_crispy_field }}
+                </div>
+                
+                <a class="text-decoration-none btn btn-sm text-primary" href="{% url 'post_detail' post.id %}">
+                    <i class="bi bi-arrow-left"></i> Back
+                </a>
+                <button class="btn btn-sm btn-primary float-end" type="submit">Update</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,8 +1,9 @@
-from typing import List
 from django.shortcuts import render, redirect, HttpResponse
+from django.contrib.auth.decorators import login_required
+from typing import List
 from main.models import Post, Comment
 from main.services import PostService, CommentService
-from main.forms import CommentForm
+from main.forms import PostForm, CommentForm
 
 
 def post_list_view(request: HttpResponse) -> HttpResponse:
@@ -43,7 +44,50 @@ def post_detail_view(request: HttpResponse, id: int) -> HttpResponse:
 
     return render(request, 'main/post_detail.html', context)
 
+@login_required
+def post_update_view(request: HttpResponse, id: int) -> HttpResponse:
+    post_service = PostService()
+    post: Post = post_service.get_object_by_id(id)
 
+    if request.user != post.author:
+        return redirect(f'/post/{id}/')
+
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES, instance=post)
+
+        if form.is_valid():
+            post_service.update_object(
+                id,
+                image=form.cleaned_data['image'],
+                title=form.cleaned_data['title'],
+                description=form.cleaned_data['description'],
+            )
+
+            return redirect(f'/post/{id}/update/')
+    else:
+        form = PostForm(instance=post)
+    
+    context = {
+        'form': form,
+        'post': post,
+    }
+
+    return render(request, 'main/post_update.html', context)
+
+@login_required
+def post_delete_view(request: HttpResponse, id: int) -> HttpResponse:
+    post_service = PostService()
+    post: Post = post_service.get_object_by_id(id)
+
+    if request.user != post.author:
+        return redirect(f'/post/{id}/')
+
+    post_service.delete_object(id)
+    
+    return redirect(f'/')
+
+
+@login_required
 def like_add_view(request: HttpResponse, id: int) -> HttpResponse:
     post_service = PostService()
     post: Post = post_service.get_object_by_id(id)
