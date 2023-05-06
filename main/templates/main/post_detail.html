@@ -11,7 +11,7 @@
                 <div>
                     <small>
                         <span class="fw-bold">{{ post.title }}</span>
-                        {% if user.is_authenticated %}
+                        {% if user.is_authenticated and user == post.author %}
                             ∙ <a class="text-decoration-none" href="{% url 'post_update' post.id %}">Update</a>
                         {% endif %}
                     </small>
@@ -86,11 +86,22 @@
                                         
                                         <div>
                                             <div>
-                                                {% if post.author.is_verified %}
+                                                {% if comment.author.is_verified %}
                                                     <i class="bi bi-patch-check-fill text-primary"></i>
                                                 {% endif %}
                                                 <small class="fw-bold">{{ comment.author }}</small>
                                                 <small class="text-muted">∙ {{ comment.date_published|date:"M d, Y" }}</small>
+
+                                                {% if comment.date_updated %}
+                                                    <small class="text-muted">(Updated: {{ comment.date_updated|date:"M j, H:m" }})</small>
+                                                {% endif %}
+
+                                                {% if comment.author == user %}
+                                                    <small>
+                                                        ∙ <a class="text-decoration-none" href="{% url 'comment_update' comment.id %}">Update</a>
+                                                        ∙ <a class="text-danger text-decoration-none" href="{% url 'comment_delete' comment.id %}">Delete</a>
+                                                    </small>
+                                                {% endif %}
                                             </div>
             
                                             <small>{{ comment.comment }}</small>

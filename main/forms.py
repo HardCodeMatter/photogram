@@ -10,8 +10,20 @@ class PostForm(forms.ModelForm):
 
 class CommentForm(forms.Form):
     comment = forms.CharField(
-        max_length=300, 
-        label='', 
-        required=True, 
-        widget=forms.Textarea(attrs={'style': 'height: 100px;'})
+        max_length = 300, 
+        label = '', 
+        required = True, 
+        widget = forms.Textarea(attrs={'style': 'height: 100px;',}),
     )
+
+
+class CommentUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ('comment',)
+        labels = {
+            'comment': '',
+        }
+        widgets = {
+            'comment': forms.Textarea(attrs={'style': 'height: 100px;', 'name': 'eg',}),
+        }

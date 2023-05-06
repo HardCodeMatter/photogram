@@ -20,6 +20,7 @@ class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     comment = models.TextField(('comment'), max_length=300)
     date_published = models.DateTimeField(('published date'), default=timezone.now)
+    date_updated = models.DateTimeField(('updated date'), blank=True, null=True)
 
     def __str__(self) -> str:
         return f'Comment {self.pk}'

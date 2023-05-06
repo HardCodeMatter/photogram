@@ -1,9 +1,10 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib.auth.decorators import login_required
+from django.utils import timezone
 from typing import List
 from main.models import Post, Comment
 from main.services import PostService, CommentService
-from main.forms import PostForm, CommentForm
+from main.forms import PostForm, CommentForm, CommentUpdateForm
 
 
 def post_list_view(request: HttpResponse) -> HttpResponse:
@@ -106,3 +107,42 @@ def like_add_view(request: HttpResponse, id: int) -> HttpResponse:
         post.likes.remove(request.user)
 
     return redirect(f'/post/{post.id}/')
+
+
+@login_required
+def comment_update_view(request: HttpResponse, id: int) -> HttpResponse:
+    comment_service = CommentService()
+    comment: Comment = comment_service.get_object_by_id(id)
+    
+    if request.method == 'POST':
+        form = CommentUpdateForm(request.POST, instance=comment)
+
+        if form.is_valid():
+            comment_service.update_object(
+                id,
+                comment=form.cleaned_data['comment'],
+                date_updated=timezone.now(),
+            )
+
+            return redirect(f'/post/{comment.post_id}/')
+    else:
+        form = CommentUpdateForm(instance=comment)
+
+    context = {
+        'form': form,
+        'comment': comment,
+    }
+
+    return render(request, 'main/comment_update.html', context)
+
+@login_required
+def comment_delete_view(request: HttpResponse, id: int) -> HttpResponse:
+    comment_service = CommentService()
+    comment: Comment = comment_service.get_object_by_id(id)
+
+    if request.user != comment.author:
+        return redirect(f'/post/{comment.post_id}/')
+
+    comment_service.delete_object(id)
+    
+    return redirect(f'/post/{comment.post_id}/')

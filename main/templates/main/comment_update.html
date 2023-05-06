@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container mt-5 mb-5">
+        <div class="bg-white border rounded p-5">
+            <form action="" method="post">
+                {% csrf_token %}
+
+                <h4 class="mb-3">Updating comment</h4>
+
+                <div>
+                    {{ form.comment|as_crispy_field }}
+                </div>
+
+                <div>
+                    <a class="btn btn-sm text-primary" href="{% url 'post_detail' comment.post_id %}"><i class="bi bi-arrow-left"></i> Back</a>
+                    <button class="btn btn-sm btn-primary float-end">Update</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
