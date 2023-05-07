@@ -35,6 +35,7 @@ class UserAdmin(BaseUserAdmin):
         ('Personal info', {'fields': (
             'first_name',
             'last_name',
+            'image',
         )}),
         ('Permissions', {'fields': (
             'date_joined',

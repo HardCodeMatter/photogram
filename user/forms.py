@@ -39,7 +39,7 @@ class UserChangeForm(forms.ModelForm):
         fields = (
             'email', 
             'password', 
-            'first_name',  
+            'first_name',
             'last_name',  
             'is_active', 
             'is_staff', 

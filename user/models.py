@@ -23,6 +23,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     first_name = models.CharField(('first name'), max_length=30)
     last_name = models.CharField(('last name'), max_length=30)
+
+    image = models.ImageField(('profile\'s image'), upload_to='user/avatar/', blank=True, null=True)
     
     date_joined = models.DateTimeField(('date joined'), default=timezone.now)
     is_staff = models.BooleanField(('staff'), default=False)

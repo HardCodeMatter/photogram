@@ -3,9 +3,9 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-    <div class="container mt-5 mb-5">
+    <div class="container mb-5">
         <div class="d-flex gap-2 mb-3">
-            <img class="rounded" style="width: 50px; height: 50px;" src="https://forkast.news/wp-content/uploads/2022/03/NFT-Avatar.png">
+            <img class="rounded" style="width: 50px; height: 50px;" src="{{ post.author.image.url }}">
             
             <div>
                 <div>
@@ -61,7 +61,7 @@
                                     {% csrf_token %}
 
                                     <div class="d-flex justify-content-start gap-3">
-                                        <img class="rounded" style="width: 60px; height: 60px;" src="https://forkast.news/wp-content/uploads/2022/03/NFT-Avatar.png">
+                                        <img class="rounded" style="width: 60px; height: 60px;" src="{{ user.image.url }}">
                                         <div class="flex-fill">{{ form.comment|as_crispy_field }}</div>
                                     </div>
                                     
@@ -82,7 +82,7 @@
                             <div class="list-group-item d-flex flex-column gap-4">
                                 {% for comment in comments %}
                                     <div class="d-flex gap-3">
-                                        <img class="rounded" style="width: 60px; height: 60px;" src="https://forkast.news/wp-content/uploads/2022/03/NFT-Avatar.png">
+                                        <img class="rounded" style="width: 60px; height: 60px;" src="{{ comment.author.image.url }}">
                                         
                                         <div>
                                             <div>
@@ -116,7 +116,7 @@
                         <div class="list-group">
                             <div class="list-group-item">
                                 <div class="d-flex gap-2 mb-2">
-                                    <img class="rounded" style="width: 50px; height: 50px;" src="https://forkast.news/wp-content/uploads/2022/03/NFT-Avatar.png">
+                                    <img class="rounded" style="width: 50px; height: 50px;" src="{{ post.author.image.url }}">
                                     
                                     <div>
                                         {% if post.author.is_verified %}
