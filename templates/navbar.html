@@ -14,25 +14,33 @@
         </small>
     </div>
 
-    <div>
+    <div class="d-flex justify-content-between align-items-center gap-3">
         {% if user.is_authenticated %}
-            <div class="dropdown">
-                <button class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <img class="rounded" style="width: 40px; height: 40px; margin-right: 5px;" src="{{ user.image.url }}">
-                    {{ user }}
-                </button>
-                
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="#">Profile</a></li>
-                    <li><a class="dropdown-item" href="#">Settings</a></li>
-                    <li><a class="dropdown-item" href="#">Help</a></li>
-                    <li><hr class="dropdown-divider"></li>
-                    <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Log out</a></li>
-                </ul>
+            <div>
+                <a class="btn btn-sm btn-outline-primary" style="width: 110px;" href="{% url 'post_create' %}">Create post</a>
+            </div>
+
+            <div>
+                <div class="dropdown">
+                    <button class="btn btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img class="rounded" style="width: 40px; height: 40px; margin-right: 5px;" src="{{ user.image.url }}">
+                        {{ user }}
+                    </button>
+                    
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="#">Profile</a></li>
+                        <li><a class="dropdown-item" href="#">Settings</a></li>
+                        <li><a class="dropdown-item" href="#">Help</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="{% url 'logout' %}">Log out</a></li>
+                    </ul>
+                </div>
             </div>
         {% else %}
-            <a class="btn btn-sm btn-outline-primary me-1" style="width: 80px;" href="{% url 'login' %}">Log in</a>
-            <a class="btn btn-sm btn-primary" style="width: 80px;" href="/register/">Sign up</a>
+            <div>
+                <a class="btn btn-sm btn-outline-primary" style="width: 80px;" href="{% url 'login' %}">Log in</a>
+                <a class="btn btn-sm btn-primary" style="width: 80px;" href="/register/">Sign up</a>
+            </div>
         {% endif %}
     </div>
 </div>

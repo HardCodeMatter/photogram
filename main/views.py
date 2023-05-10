@@ -46,6 +46,31 @@ def post_detail_view(request: HttpResponse, id: int) -> HttpResponse:
     return render(request, 'main/post_detail.html', context)
 
 @login_required
+def post_create_view(request: HttpResponse) -> HttpResponse:
+    post_service = PostService()
+
+    if request.method == 'POST':
+        form = PostForm(request.POST, request.FILES)
+
+        if form.is_valid():
+            post: Post = post_service.create_object(
+                image=form.cleaned_data['image'],
+                title=form.cleaned_data['title'],
+                description=form.cleaned_data['description'],
+                author=request.user,
+            )
+
+            return redirect(f'/post/{post.id}/')
+    else:
+        form = PostForm()
+
+    context = {
+        'form': form,
+    }
+
+    return render(request, 'main/post_create.html', context)
+
+@login_required
 def post_update_view(request: HttpResponse, id: int) -> HttpResponse:
     post_service = PostService()
     post: Post = post_service.get_object_by_id(id)

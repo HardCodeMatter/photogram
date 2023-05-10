@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container mb-5">
+        <div class="bg-white border rounded p-5">
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <h4 class="mb-3">Creating post</h4>
+
+                <div>
+                    {{ form.image|as_crispy_field }}
+                </div>
+                <div>
+                    {{ form.title|as_crispy_field }}
+                </div>
+                <div>
+                    {{ form.description|as_crispy_field }}
+                </div>
+
+                <div>
+                    <a class="btn btn-sm text-primary" href="{% url 'post_list' %}"><i class="bi bi-arrow-left"></i> Back</a>
+                    <button class="btn btn-sm btn-primary float-end">Create</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
