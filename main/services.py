@@ -1,5 +1,5 @@
 from typing import List, Dict
-from main.models import Post, Comment
+from main.models import Post, Comment, Report
 
 
 class PostService:
@@ -63,4 +63,38 @@ class CommentService:
     def delete_object(self, id: int) -> None:
         """Deletes an existing Comment record in the database"""
         object = Comment.objects.get(id=id)
+        object.delete()
+
+
+class ReportService:
+    def get_objects(self) -> List[Report]:
+        """Returns a queryset of all Report records in the database"""
+        return Report.objects.all()
+    
+    def filter_objects(self, **data: Dict) -> List[Report]:
+        """Returns a queryset of filtered Report records in the database"""
+        return Report.objects.filter(**data)
+
+    def get_object_by_id(self, id: int) -> Report:
+        """Returns a single Report record by id"""
+        return Report.objects.get(id=id)
+    
+    def create_object(self, **data: Dict) -> Report:
+        """Creates a new Report record in the database"""
+        return Report.objects.create(**data)
+    
+    def update_object(self, id: int, **data: Dict) -> Report:
+        """Updates an existing Report record in the database"""
+        object = Report.objects.get(id=id)
+
+        for key, value in data.items():
+            setattr(object, key, value)
+
+        object.save()
+
+        return object
+
+    def delete_object(self, id: int) -> None:
+        """Deletes an existing Report record in the database"""
+        object = Report.objects.get(id=id)
         object.delete()

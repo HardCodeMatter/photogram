@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.utils import timezone
 from typing import List
 from main.models import Post, Comment
-from main.services import PostService, CommentService
+from main.services import PostService, CommentService, ReportService
 from main.forms import PostForm, CommentForm, CommentUpdateForm
 
 
@@ -171,3 +171,26 @@ def comment_delete_view(request: HttpResponse, id: int) -> HttpResponse:
     comment_service.delete_object(id)
     
     return redirect(f'/post/{comment.post_id}/')
+
+
+@login_required
+def report_create_view(request: HttpResponse, id: int) -> HttpResponse:
+    post_service = PostService()
+    post: Post = post_service.get_object_by_id(id)
+
+    report_service = ReportService()
+    
+    if request.method == 'POST':
+        report_service.create_object(
+            reason=request.POST.get('reason'),
+            post=post,
+            author=request.user,
+        )
+
+        return redirect(f'/post/{post.id}/')
+
+    context = {
+        'post': post,
+    }
+
+    return render(request, 'main/report_create.html', context)

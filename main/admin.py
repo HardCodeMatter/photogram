@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Comment
+from .models import Post, Comment, Report
 
 
 @admin.register(Post)
@@ -41,4 +41,25 @@ class CommentAdmin(admin.ModelAdmin):
     )
 
     search_fields = ('id', 'post', 'author', 'date_published',)
+    ordering = ('-id',)
+
+
+@admin.register(Report)
+class ReportAdmin(admin.ModelAdmin):
+    list_display = ('id', 'post', 'author', 'is_agreed', 'date_reported',)
+    list_filter = ('id', 'reason', 'post', 'author', 'is_agreed', 'date_reported',)
+
+    fieldsets = (
+        (None, {'fields': (
+            'reason', 'post',
+        )}),
+        ('Reporter', {'fields': (
+            'author',
+        )}),
+        ('Status', {'fields': (
+            'is_agreed', 'date_reported',
+        )}),
+    )
+
+    search_fields = ('id', 'reason', 'post', 'author', 'date_published',)
     ordering = ('-id',)

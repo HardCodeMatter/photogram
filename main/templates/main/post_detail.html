@@ -151,10 +151,22 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <div class="d-flex justify-content-between mt-2">
+                                <div class="text-black">
+                                </div>
+
+                                <a class="text-danger text-decoration-none" href="#" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasReportPost" aria-controls="offcanvasReportPost">
+                                    <i class="bi bi-exclamation-square"></i>
+                                    <small>Report</small>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    {% include 'main/report_create.html' %}
 {% endblock %}

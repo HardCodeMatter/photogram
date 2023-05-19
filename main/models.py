@@ -24,3 +24,14 @@ class Comment(models.Model):
 
     def __str__(self) -> str:
         return f'Comment {self.pk}'
+
+
+class Report(models.Model):
+    reason = models.CharField(('reason'), max_length=30)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    is_agreed = models.BooleanField(('agree'), default=False)
+    date_reported = models.DateTimeField(('reported date'), default=timezone.now)
+
+    def __str__(self) -> str:
+        return f'Report {self.pk}'
