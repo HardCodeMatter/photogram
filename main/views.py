@@ -194,3 +194,15 @@ def report_create_view(request: HttpResponse, id: int) -> HttpResponse:
     }
 
     return render(request, 'main/report_create.html', context)
+
+@login_required
+def post_status_view(request: HttpResponse, id: int) -> HttpResponse:
+    post_service = PostService()
+    post: Post = post_service.get_object_by_id(id)
+
+    post_service.update_object(
+        id,
+        is_active=not post.is_active,
+    )
+
+    return redirect(f'/post/{post.id}/')

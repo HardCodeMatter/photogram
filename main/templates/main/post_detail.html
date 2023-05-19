@@ -153,8 +153,11 @@
                             </div>
 
                             <div class="d-flex justify-content-between mt-2">
-                                <div class="text-black">
-                                </div>
+                                <form action="{% url 'post_status' post.id %}" method="post">
+                                    {% csrf_token %}
+
+                                    <button class="btn btn-sm btn-outline-danger" type="submit">Block</button>
+                                </form>
 
                                 <a class="text-danger text-decoration-none" href="#" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasReportPost" aria-controls="offcanvasReportPost">
                                     <i class="bi bi-exclamation-square"></i>

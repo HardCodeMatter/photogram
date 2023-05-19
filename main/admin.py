@@ -4,8 +4,8 @@ from .models import Post, Comment, Report
 
 @admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'author', 'date_published',)
-    list_filter = ('id', 'title', 'author', 'date_published',)
+    list_display = ('id', 'title', 'author', 'is_active', 'date_published',)
+    list_filter = ('id', 'title', 'author', 'is_active', 'date_published',)
 
     fieldsets = (
         (None, {'fields': (
@@ -16,6 +16,9 @@ class PostAdmin(admin.ModelAdmin):
         )}),
         ('Date', {'fields': (
             'date_published',
+        )}),
+        ('Status', {'fields': (
+            'is_active',
         )}),
     )
 

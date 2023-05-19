@@ -10,6 +10,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, blank=True, related_name='likes')
     date_published = models.DateField(('published date'), default=timezone.now)
+    is_active = models.BooleanField(('active'), default=True)
 
     def __str__(self) -> str:
         return self.title
