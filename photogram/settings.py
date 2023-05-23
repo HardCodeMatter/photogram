@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
 
     'main.apps.MainConfig',
+    'dashboard.apps.DashboardConfig',
 
     'user.apps.UserConfig',
     'register.apps.RegisterConfig',
