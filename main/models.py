@@ -30,7 +30,8 @@ class Comment(models.Model):
 class Report(models.Model):
     reason = models.CharField(('reason'), max_length=30)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    post_author = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='post_author')
+    report_author = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='report_author')
     is_agreed = models.BooleanField(('agree'), default=False)
     date_reported = models.DateTimeField(('reported date'), default=timezone.now)
 

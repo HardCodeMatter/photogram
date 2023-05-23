@@ -49,20 +49,21 @@ class CommentAdmin(admin.ModelAdmin):
 
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
-    list_display = ('id', 'post', 'author', 'is_agreed', 'date_reported',)
-    list_filter = ('id', 'reason', 'post', 'author', 'is_agreed', 'date_reported',)
+    list_display = ('id', 'post', 'post_author', 'report_author', 'is_agreed', 'date_reported',)
+    list_filter = ('id', 'reason', 'post', 'post_author', 'report_author', 'is_agreed', 'date_reported',)
 
     fieldsets = (
         (None, {'fields': (
             'reason', 'post',
         )}),
-        ('Reporter', {'fields': (
-            'author',
+        ('Users', {'fields': (
+            'post_author',
+            'report_author',
         )}),
         ('Status', {'fields': (
             'is_agreed', 'date_reported',
         )}),
     )
 
-    search_fields = ('id', 'reason', 'post', 'author', 'date_published',)
+    search_fields = ('id', 'reason', 'post', 'report_author', 'date_published',)
     ordering = ('-id',)

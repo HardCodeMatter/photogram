@@ -184,7 +184,8 @@ def report_create_view(request: HttpResponse, id: int) -> HttpResponse:
         report_service.create_object(
             reason=request.POST.get('reason'),
             post=post,
-            author=request.user,
+            post_author=post.author,
+            report_author=request.user,
         )
 
         return redirect(f'/post/{post.id}/')
@@ -197,6 +198,7 @@ def report_create_view(request: HttpResponse, id: int) -> HttpResponse:
 
 @login_required
 def post_status_view(request: HttpResponse, id: int) -> HttpResponse:
+    """Must be in the admin panel"""
     post_service = PostService()
     post: Post = post_service.get_object_by_id(id)
 
