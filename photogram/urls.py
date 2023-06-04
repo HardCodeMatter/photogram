@@ -10,4 +10,5 @@ urlpatterns = [
     path('register/', view_reg.register),
     path('', include('django.contrib.auth.urls')),
     path('', include('main.urls')),
+    path('dashboard/', include('dashboard.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

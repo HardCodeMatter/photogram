@@ -1,0 +1,79 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block content %}
+    <div class="bg-dark rounded">
+        <table class="table text-white">
+            <div class="p-2 ms-2">
+                <small class="fs-6">ACCOUNTS LIST</small>
+            </div>
+
+            <caption class="ms-3">
+                <small>TOTAL ACCOUNTS:</small>
+                <span class="text-white">{{ accounts.count }}</span>
+            </caption>
+
+            <thead class="table-secondary">
+                <tr>
+                    <td scope="col"><small>ID</small></td>
+                    <td scope="col"><small>USER</small></td>
+                    <td scope="col"><small>REPORTS</small></td>
+                    <td scope="col"><small>DATE JOINED</small></td>
+                    <td scope="col"></td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for account in accounts %}
+                    <tr>
+                        <td scope="row"><small>{{ account.id }}</small></td>
+                        <td><small>{{ account.get_full_name }}</small></td>
+                        <td><small>12</small></td>
+                        <td><small>{{ account.date_joined|date:"M j, Y" }}</small></td>
+                        <td class="d-flex gap-2">
+                            <a href="{% url 'd/account_posts' account.id %}"><i class="text-primary bi bi-eye"></i></a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- <div class="">
+        <table class="bg-dark rounded border border-secondary table text-white">
+            <tbody class="table-group">            
+                {% for account in accounts %}
+                    <tr>
+                        <td class="d-flex justify-content-between">
+                            <div>
+                                <h5 class="lead">
+                                    {{ account }}
+                                    {% if account.is_verified %}
+                                        <small><i class="bi bi-patch-check-fill text-primary"></i></small>
+                                    {% endif %}
+                                </h5>
+                                
+                                <small class="d-flex align-items-center gap-3">
+                                    <span>
+                                        <i class="bi bi-collection"></i> {{ account.post_set.count }}
+                                    </span>
+
+                                    <span>
+                                        <i class="bi bi-exclamation-triangle"></i> 13
+                                    </span>
+                                </small>
+                            </div>
+
+                            <div class="d-flex align-items-center gap-3 me-2">
+                                <a href="">
+                                    <h3><i class="bi bi-pen"></i></h3>
+                                </a>
+                                <a href="">
+                                    <h3><i class="bi bi-person-dash text-danger"></i></h3>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div> -->
+{% endblock %}
