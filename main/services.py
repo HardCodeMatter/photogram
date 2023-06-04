@@ -7,6 +7,10 @@ class PostService:
         """Returns a queryset of all Post records in the database"""
         return Post.objects.all()
     
+    def filter_objects(self, author_id: int) -> List[Post]:
+        """Returns a queryset of filtered Post records in the database"""
+        return Post.objects.filter(author_id=author_id)
+    
     def get_object_by_id(self, id: int) -> Post:
         """Returns a single Post record by id"""
         return Post.objects.get(id=id)

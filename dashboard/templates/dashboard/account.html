@@ -1,0 +1,120 @@
+{% extends 'dashboard/dashboard_base.html' %}
+
+{% block content %}
+    <div class="d-flex gap-3">
+        <div class="bg-dark rounded w-50">
+            <div class="d-flex flex-column justify-content-center align-items-center mt-5">
+                <img src="{{ account.image.url }}" alt="Avatar" class="rounded mb-3" style="width: 110px; height: 110px;">
+                <h5>{{ account.get_full_name }}</h5>
+                
+                {% if account.role.level == 1 %}
+                    <small class="badge text-bg-warning text-white">{{ account.role }}</small>
+                {% elif account.role.level >= 3 %}
+                    <small class="badge text-bg-danger">{{ account.role }}</small>
+                {% else %}
+                    <small class="badge text-bg-light">{{ account.role }}</small>
+                {% endif %}
+            </div>
+
+            <div class="d-flex align-items-center justify-content-center gap-2 mt-3 mb-3">
+                <div class="bg-primary rounded" style="padding: 10px 15px;">
+                    <i class="bi bi-briefcase"></i>
+                </div>
+                <div class="d-flex flex-column">
+                    <span class="fw-bold">{{ posts.count }}</span>
+                    <small class="text-muted">Posts</small>
+                </div>
+            </div>
+
+            <hr class="m-3">
+
+            <div class="m-3">
+                <small class="text-uppercase text-muted fw-light">Details</small>
+
+                <div class="d-flex flex-column gap-1 mt-2">
+                    <div>
+                        <small class="text-muted">Full name: <span class="text-white">{{ account.get_full_name }}</span></small>
+                    </div>
+    
+                    <div>
+                        <small class="text-muted">Email: <span class="text-white">{{ account.email }}</span></small>
+                    </div>
+                    
+                    <div>
+                        <small class="text-muted">Status:</small>
+                        {% if account.is_active %}
+                            <small class="badge text-bg-primary">Active</small>
+                        {% else %}
+                            <small class="badge text-bg-danger">Inactive</small>
+                        {% endif %}
+                    </div>
+                    
+                    <div>
+                        <small class="text-muted">Premium:</small>
+                        {% if account.is_verified %}
+                            <small class="badge text-bg-primary">Verified</small>
+                        {% else %}
+                            <small class="badge text-bg-danger">Unverified</small>
+                        {% endif %}
+                    </div>
+    
+                    <div>
+                        <small class="text-muted">Date joined: <span class="text-white">{{ account.date_joined|date:"M j, Y" }}</span></small>
+                    </div>
+                </div>
+
+                <a class="btn btn-sm btn-outline-danger w-100 mt-3" href="">Suspend</a>
+            </div>
+        </div>
+
+        <div class="w-100 h-100">
+            <div class="mb-2">
+                <a class="btn btn-sm btn-outline-primary
+                    {% if request.resolver_match.url_name == 'd/account_posts' %}active{% endif %}
+                " style="width: 80px;" aria-current="page" href="{% url 'd/account_posts' account.id %}">Posts</a>
+                <a class="btn btn-sm btn-outline-primary" style="width: 80px;" href="#">Reports</a>
+                <a class="btn btn-sm btn-outline-primary disabled" style="width: 80px;" href="#">Security</a>
+            </div>
+
+            <div class="bg-dark rounded">
+                <table class="table text-white">
+                    <div class="p-2 ms-2">
+                        <small class="fs-6">POST LIST</small>
+                    </div>
+    
+                    <caption class="ms-3">
+                        <small>TOTAL POSTS:</small>
+                        <span class="text-white">{{ posts.count }}</span>
+                    </caption>
+    
+                    <thead class="table-secondary">
+                        <tr>
+                            <td scope="col"><small>ID</small></td>
+                            <td scope="col"><small>TITLE</small></td>
+                            <td scope="col"><small>LIKES</small></td>
+                            <td scope="col"><small>COMMENTS</small></td>
+                            <td scope="col"><small>DATE PUBLISHED</small></td>
+                            <td scope="col"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                            <tr>
+                                <td scope="row"><small>{{ post.id }}</small></td>
+                                <td><small>{{ post.title }}</small></td>
+                                <td><small>{{ post.likes.count }}</small></td>
+                                <td><small>{{ post.comment_set.count }}</small></td>
+                                <td><small>{{ post.date_published }}</small></td>
+                                <td class="d-flex gap-2">
+                                    <a href=""><i class="text-primary bi bi-eye"></i></a>
+                                    <a href=""><i class="text-danger bi bi-x-octagon"></i></a>
+                                    <a href=""><i class="text-danger bi bi-trash"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}
