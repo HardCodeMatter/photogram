@@ -31,6 +31,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_active = models.BooleanField(('active'), default=True)
     is_verified = models.BooleanField(('verified'), default=False)
 
+    report_amount = models.IntegerField(('count of report'), default=0)
+    report_date = models.DateTimeField(('time of report'), null=True)
+
     role = models.ForeignKey(Role, on_delete=models.CASCADE, default=1)
 
     objects = UserManager()

@@ -10,6 +10,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     likes = models.ManyToManyField(User, blank=True, related_name='likes')
     date_published = models.DateField(('published date'), default=timezone.now)
+    is_active = models.BooleanField(('active'), default=True)
 
     def __str__(self) -> str:
         return self.title
@@ -24,3 +25,15 @@ class Comment(models.Model):
 
     def __str__(self) -> str:
         return f'Comment {self.pk}'
+
+
+class Report(models.Model):
+    reason = models.CharField(('reason'), max_length=30)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post_author = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='post_author')
+    report_author = models.ForeignKey(User, on_delete=models.CASCADE, default=None, related_name='report_author')
+    is_agreed = models.BooleanField(('agree'), default=False)
+    date_reported = models.DateTimeField(('reported date'), default=timezone.now)
+
+    def __str__(self) -> str:
+        return f'Report {self.pk}'

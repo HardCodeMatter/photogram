@@ -44,6 +44,10 @@ class UserAdmin(BaseUserAdmin):
             'is_verified',
             'role',
         )}),
+        ('Reports', {'fields': (
+            'report_amount',
+            'report_date',
+        )}),
     )
     add_fieldsets = (
         (None, {
@@ -51,6 +55,7 @@ class UserAdmin(BaseUserAdmin):
             'fields': ('email', 'password1', 'password2')
         }),
     )
-    search_fields = ('first_name', 'last_name', 'email')
+    search_fields = ('first_name', 'last_name', 'email',)
+    readonly_fields = ('report_date',)
     ordering = ('id',)
     filter_horizontal = ()
